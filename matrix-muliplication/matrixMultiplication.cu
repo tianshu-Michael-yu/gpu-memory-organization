@@ -57,4 +57,10 @@ void matrixMultiplication(int *matrixA, int *matrixB, int *matrixC, size_t matri
     cudaError_t err7 = cudaFree(d_A);
     cudaError_t err8 = cudaFree(d_B);
     cudaError_t err9 = cudaFree(d_C);
+
+    // error checking
+    if (err7 != cudaSuccess || err8 != cudaSuccess || err9 != cudaSuccess) {
+        printf("Error freeing memory on the device\n");
+        exit(EXIT_FAILURE);
+    }
 }
