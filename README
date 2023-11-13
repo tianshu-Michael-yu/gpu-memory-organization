@@ -1,0 +1,2 @@
+Compile the matrix-multiplication and vector-addition kernels using make.
+To use GPU acceleration, compile with USE_CUDA=1 flag. i.e. make USE_CUDA=1
