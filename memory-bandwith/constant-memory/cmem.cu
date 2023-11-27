@@ -11,7 +11,7 @@ typedef unsigned int u32;
 __constant__ static u32 cmem_data_gpu[KERNEL_LOOP];
 static u32 const_data_host[KERNEL_LOOP];
 
-__global__ void const_test_gpu_cmem(u32 * const data, const u32 num_elements) {
+__global__ void const_test_gpu_smem(u32 * const data, const u32 num_elements) {
     const u32 tid = threadIdx.x + blockIdx.x * blockDim.x;
     if (tid < num_elements) {
         u32 d = cmem_data_gpu[0];
@@ -59,7 +59,7 @@ int main() {
     CUDA_CALL(cudaEventCreateWithFlags(&stop, cudaEventBlockingSync));
 
     CUDA_CALL(cudaEventRecord(start));
-    const_test_gpu_cmem<<<num_blocks, threads_per_block>>>(data_gpu, num_elements);
+    const_test_gpu_smem<<<num_blocks, threads_per_block>>>(data_gpu, num_elements);
     cuda_error_check();
 
     CUDA_CALL(cudaEventRecord(stop));

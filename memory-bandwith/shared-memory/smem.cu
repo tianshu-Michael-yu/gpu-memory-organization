@@ -8,16 +8,19 @@ typedef unsigned int u32;
 
 #define KERNEL_LOOP 4096
 
+__shared__ u32 smem_data_gpu[KERNEL_LOOP];
+
 __global__ void const_test_gpu_smem(u32 * const data, const u32 num_elements) {
     const u32 tid = threadIdx.x + blockIdx.x * blockDim.x;
+    smem_data_gpu[0] = 0;
     if (tid < num_elements) {
         u32 d = 0;
 
         for (int i=0; i<KERNEL_LOOP; i++) {
-            d = tid+i;
-            d ^= d;
-            d |= d;
-            d &= d;
+            smem_data_gpu[(i+1)%KERNEL_LOOP] = tid + i;
+            d ^= smem_data_gpu[i];
+            d |= smem_data_gpu[i];
+            d &= smem_data_gpu[i];
         }
 
         data[tid] = d;
@@ -61,7 +64,7 @@ int main() {
     float elapsed_time;
     CUDA_CALL(cudaEventElapsedTime(&elapsed_time, start, stop));
 
-    printf("registers time: %f ms\n", elapsed_time);
+    printf("shared memory time: %f ms\n", elapsed_time);
 
     CUDA_CALL(cudaEventDestroy(start));
     CUDA_CALL(cudaEventDestroy(stop));
