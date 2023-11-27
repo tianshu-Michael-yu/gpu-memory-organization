@@ -25,6 +25,7 @@ void vectorAdd(int *a, int *b, int *c, int n) {
     clock_t kernel_start = clock();
     // launch kernel
     vectorAddKernel<<<ceil(n / (float)TPB), TPB>>>(dev_a, dev_b, dev_c, n);
+    cudaDeviceSynchronize();
     clock_t kernel_end = clock();
     printf("Kernel time: %f\n", (double)(kernel_end - kernel_start) / CLOCKS_PER_SEC);
 
