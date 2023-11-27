@@ -21,6 +21,13 @@ void bandwithTest() {
 
     cudaMalloc(&array, TPB * sizeof(*array));
 
+    // print device warp size
+    int dev;
+    cudaDeviceProp prop;
+    cudaGetDevice(&dev);
+    cudaGetDeviceProperties(&prop, dev);
+    printf("Device warp size: %d\n", prop.warpSize);
+
     cudaEventRecord(startKernel);
     bandwith<<<1, TPB>>>(array); // test warp memory write bandwith
     cudaEventRecord(stopKernel);
