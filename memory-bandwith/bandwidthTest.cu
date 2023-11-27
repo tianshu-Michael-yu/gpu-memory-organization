@@ -31,7 +31,7 @@ void bandwithTest() {
     // check the results
     for (size_t i = 0; i < TPB; ++i) {
         if (host_array[i] != i+5) {
-            printf("Error at index %d: Expected %d, got %d\n", i, i+5, host_array[i]);
+            printf("Error at index %ld: Expected %ld, got %d\n", i, i+5, host_array[i]);
             exit(EXIT_FAILURE);
         }
     }
