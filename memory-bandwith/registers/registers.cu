@@ -14,7 +14,7 @@ static u32 const_data_host[KERNEL_LOOP];
 __global__ void const_test_gpu_cmem(u32 * const data, const u32 num_elements) {
     const u32 tid = threadIdx.x + blockIdx.x * blockDim.x;
     if (tid < num_elements) {
-        u32 d = cmem_data_gpu[0];
+        u32 d = 0;
 
         for (int i=0; i<KERNEL_LOOP; i++) {
             d ^= cmem_data_gpu[i];
@@ -67,7 +67,7 @@ int main() {
     float elapsed_time;
     CUDA_CALL(cudaEventElapsedTime(&elapsed_time, start, stop));
 
-    printf("constant memory time: %f ms\n", elapsed_time);
+    printf("registers time: %f ms\n", elapsed_time);
 
     CUDA_CALL(cudaEventDestroy(start));
     CUDA_CALL(cudaEventDestroy(stop));
